@@ -26,18 +26,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //#define QUICK_TAP_TERM 0
 //#define TAPPING_TERM 100
 
-// USB connection
-#define USB_VBUS_PIN GP24
-#define SPLIT_HAND_PIN GP21
-#define SPLIT_USB_TIMEOUT 10000
-#define SPLIT_USB_TIMEOUT_POLL 25
-
-#ifdef MOUSEKEY_ENABLE 
-    #define MOUSEKEY_MOVE_DELTA 2
-    //#define MOUSEKEY_TIME_TO_MAX 50
-    //#define MOUSEKEY_MAX_SPEED 8
-#endif
-
 /* serial driver setting */
 #define SERIAL_USART_FULL_DUPLEX
 #define SERIAL_USART_DRIVER SIOD0
@@ -48,3 +36,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //#define I2C_DRIVER I2CD1
 #define I2C1_SDA_PIN GP18
 #define I2C1_SCL_PIN GP19
+
+// USB connection
+#define USB_VBUS_PIN GP24
+#define SPLIT_HAND_PIN GP21
+#define SPLIT_USB_TIMEOUT 10000      // wait 10sec
+#define SPLIT_USB_TIMEOUT_POLL 25    // 25ms interval for USB check
+
+#ifdef MOUSEKEY_ENABLE 
+    #define MOUSEKEY_MOVE_DELTA 2
+    //#define MOUSEKEY_TIME_TO_MAX 50
+    //#define MOUSEKEY_MAX_SPEED 8
+#endif
+
+//OLED orientation
+#define LEFTHAND_OLED_UPSIDEDOWN

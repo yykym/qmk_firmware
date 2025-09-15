@@ -1,8 +1,6 @@
-#include "quantum.h"
-
 // Copyright 2023 QMK
 // SPDX-License-Identifier: GPL-2.0-or-later
-// #include QMK_KEYBOARD_H
+//#include QMK_KEYBOARD_H
 /*
 Copyright 2019 @foostan
 Copyright 2020 Drashna Jaelre <@drashna>
@@ -21,6 +19,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "quantum.h"
 
 #ifdef SWAP_HANDS_ENABLE
 __attribute__((weak)) const keypos_t PROGMEM hand_swap_config[MATRIX_ROWS][MATRIX_COLS] = {
@@ -28,12 +27,12 @@ __attribute__((weak)) const keypos_t PROGMEM hand_swap_config[MATRIX_ROWS][MATRI
     {{0, 4}, {1, 4}, {2, 4}, {3, 4}, {4, 4}},
     {{0, 5}, {1, 5}, {2, 5}, {3, 5}, {4, 5}},
     {{0, 6}, {1, 6}, {2, 6}, {3, 6}, {4, 6}},
-    {{4, 7}, {3, 7}, {0, 7}, {1, 7}, {2, 7}},
+    {{0, 7}, {1, 7}, {2, 7}, {3, 7}, {4, 7}},
     // Right
     {{0, 0}, {1, 0}, {2, 0}, {3, 0}, {4, 0}},
     {{0, 1}, {1, 1}, {2, 1}, {3, 1}, {4, 1}},
     {{0, 2}, {1, 2}, {2, 2}, {3, 2}, {4, 2}},
-    {{4, 3}, {3, 3}, {0, 3}, {1, 3}, {2, 3}}
+    {{0, 3}, {1, 3}, {2, 3}, {3, 3}, {4, 3}}
 }
 #endif
 
@@ -51,19 +50,15 @@ bool should_process_keypress(void) {
     return is_keyboard_master();
 }
 
-
-//oled_rotation_t oled_init_kb(oled_rotation_t rotation) {
-//    // if (!is_keyboard_master()) {
-//    //     return OLED_ROTATION_180; // flips the display 180 degrees if offhand
-//    // }
-//    // if (is_keyboard_master()) {
-//    //     return OLED_ROTATION_180; // flips the display 180 degrees if offhand
-//    // }
-//    if (readPin(SPLIT_HAND_PIN)){
-//        return OLED_ROTATION_180; // flips the display 180 degrees if offhand
-//    }
-//    return rotation;
-//}
+#ifdef LEFTHAND_OLED_UPSIDEDOWN
+oled_rotation_t oled_init_kb(oled_rotation_t rotation) {
+    // if (is_keyboard_master()) {
+    if (readPin(SPLIT_HAND_PIN)){
+        return OLED_ROTATION_180; // flips the display 180 degrees if offhand
+    }
+    return rotation;
+}
+#endif //LEFTHAND_OLED_UPSIDEDOWN
 
 
 static void oled_render_layer_state(void) {

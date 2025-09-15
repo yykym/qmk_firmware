@@ -1,2 +1,3 @@
+SRC += common.c
 VIA_ENABLE = yes
 SPLIT_TRANSPORT_MIRROR = yes
