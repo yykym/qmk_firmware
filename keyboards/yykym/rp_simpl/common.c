@@ -1,52 +1,8 @@
+#include "quantum.h"
+
 // Copyright 2023 QMK
 // SPDX-License-Identifier: GPL-2.0-or-later
-#include QMK_KEYBOARD_H
-
-const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-     /*
-      * ┌───┬───┬───┬───┬───┐       ┌───┬───┬───┬───┬───┐
-      * │ Q │ W │ E │ R │ T │       │ Y │ U │ I │ O │ P │
-      * ├───┼───┼───┼───┼───┤       ├───┼───┼───┼───┼───┤
-      * │ A │ S │ D │ F │ G │       │ H │ J │ K │ L │ ; │
-      * ├───┼───┼───┼───┼───┤       ├───┼───┼───┼───┼───┤
-      * │ Z │ X │ C │ V │ B │       │ N │ M │ , │ . │ / │
-      * └───┴───┼───┼───┼───┤       ├───┼───┼───┼───┴───┘
-      *         │ 1 │ 2 │ 3 │       │ 4 │ 5 │ 6 │
-      *         └───┴───┴───┘       └───┴───┴───┘
-      */
-
-
-    [0] = LAYOUT_split_3x5_3(
-                                LALT_T(KC_Q), KC_W, KC_E, KC_R, KC_T,     KC_Y, KC_U, KC_I, KC_O, RALT_T(KC_P),
-                                LCTL_T(KC_A), KC_S, KC_D, KC_F, KC_G,     KC_H, KC_J, KC_K, KC_L, RCTL_T(KC_SCLN),
-                                LSFT_T(KC_Z), KC_X, KC_C, KC_V, KC_B,     KC_N, KC_M, KC_COMM, KC_DOT, RSFT_T(KC_SLSH),
-                                              KC_LGUI, MO(1), KC_SPC,     KC_NO, MO(2), KC_ESC
-    ),
-
-    [1] = LAYOUT_split_3x5_3(
-                                LALT_T(KC_1), KC_2, KC_3, KC_4, KC_5,              KC_6, KC_7, KC_8, KC_9, RALT_T(KC_0),
-                                LCTL_T(KC_TAB), KC_MINS, KC_EQL, KC_LNG2, KC_LNG1, KC_LEFT, KC_DOWN, KC_UP, KC_RGHT, RCTL_T(KC_BSPC),
-                                KC_LSFT, KC_GRV, KC_NO, KC_NO, KC_NO,              KC_HOME, KC_PGUP, KC_PGDN, KC_END, KC_TRNS,
-                                              KC_TRNS, KC_NO, KC_TRNS,         KC_ENT, MO(3), KC_TRNS
-    ),
-
-    [2] = LAYOUT_split_3x5_3(
-                                LALT_T(KC_F1), KC_F2, KC_F3, KC_F4, KC_F5,    KC_F6, KC_F7, KC_F8, KC_F9, RALT_T(KC_F10),
-                                KC_TRNS, KC_TRNS, KC_TRNS, KC_NO, KC_NO,      KC_SCLN, KC_QUOT, KC_DOT, KC_LBRC, RCTL_T(KC_RBRC),
-                                KC_TRNS, KC_TRNS, KC_NO, KC_NO, KC_NO,        KC_NO, KC_NO, KC_COMM, KC_BSLS, KC_TRNS, 
-                                                  KC_TRNS, MO(3), KC_TRNS,    KC_TRNS, KC_NO, KC_TRNS
-    ),
-
-    [3] = LAYOUT_split_3x5_3(
-                                LALT_T(KC_F11), KC_F12, KC_NO, KC_NO, KC_APP,        KC_NO, KC_NO, KC_INS, KC_NO, RALT_T(KC_PSCR),
-                                KC_TRNS, KC_SCRL, LCA(KC_DEL), MS_BTN1, MS_BTN2,    MS_LEFT, MS_DOWN, MS_UP, MS_RGHT, KC_DEL,
-                                KC_TRNS, KC_NO, KC_CAPS, UG_VALU, UG_VALD,          UG_TOGG, UG_NEXT, UG_HUEU, UG_SATU, RSFT_T(UG_SATD),
-                                                KC_NO, KC_NO, KC_NO,                KC_NO, KC_NO, KC_NO
-    )
-};
-
-
-
+// #include QMK_KEYBOARD_H
 /*
 Copyright 2019 @foostan
 Copyright 2020 Drashna Jaelre <@drashna>
@@ -65,7 +21,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "quantum.h"
 
 #ifdef SWAP_HANDS_ENABLE
 __attribute__((weak)) const keypos_t PROGMEM hand_swap_config[MATRIX_ROWS][MATRIX_COLS] = {
@@ -73,12 +28,12 @@ __attribute__((weak)) const keypos_t PROGMEM hand_swap_config[MATRIX_ROWS][MATRI
     {{0, 4}, {1, 4}, {2, 4}, {3, 4}, {4, 4}},
     {{0, 5}, {1, 5}, {2, 5}, {3, 5}, {4, 5}},
     {{0, 6}, {1, 6}, {2, 6}, {3, 6}, {4, 6}},
-    {{0, 7}, {1, 7}, {2, 7}, {3, 7}, {4, 7}},
+    {{4, 7}, {3, 7}, {0, 7}, {1, 7}, {2, 7}},
     // Right
     {{0, 0}, {1, 0}, {2, 0}, {3, 0}, {4, 0}},
     {{0, 1}, {1, 1}, {2, 1}, {3, 1}, {4, 1}},
     {{0, 2}, {1, 2}, {2, 2}, {3, 2}, {4, 2}},
-    {{0, 3}, {1, 3}, {2, 3}, {3, 3}, {4, 3}}
+    {{4, 3}, {3, 3}, {0, 3}, {1, 3}, {2, 3}}
 }
 #endif
 
@@ -201,13 +156,13 @@ static void oled_render_keylog(void) {
 
 __attribute__((weak)) void oled_render_logo(void) {
     // clang-format off
-    static const char PROGMEM crkbd_logo[] = {
+    static const char PROGMEM qmk_logo[] = {
         0x80, 0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87, 0x88, 0x89, 0x8a, 0x8b, 0x8c, 0x8d, 0x8e, 0x8f, 0x90, 0x91, 0x92, 0x93, 0x94,
         0xa0, 0xa1, 0xa2, 0xa3, 0xa4, 0xa5, 0xa6, 0xa7, 0xa8, 0xa9, 0xaa, 0xab, 0xac, 0xad, 0xae, 0xaf, 0xb0, 0xb1, 0xb2, 0xb3, 0xb4,
         0xc0, 0xc1, 0xc2, 0xc3, 0xc4, 0xc5, 0xc6, 0xc7, 0xc8, 0xc9, 0xca, 0xcb, 0xcc, 0xcd, 0xce, 0xcf, 0xd0, 0xd1, 0xd2, 0xd3, 0xd4,
         0};
 
-    oled_write_P(crkbd_logo, false);
+    oled_write_P(qmk_logo, false);
 };
 bool oled_task_kb(void) {
 

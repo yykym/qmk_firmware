@@ -26,25 +26,25 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //#define QUICK_TAP_TERM 0
 //#define TAPPING_TERM 100
 
-//#ifdef RGBLIGHT_ENABLE
-//    #define RGBLIGHT_EFFECT_BREATHING
-//    #define RGBLIGHT_EFFECT_RAINBOW_MOOD
-//    //#define RGBLIGHT_EFFECT_RAINBOW_SWIRL
-//    // #define RGBLIGHT_EFFECT_SNAKE
-//    #define RGBLIGHT_EFFECT_KNIGHT
-//    //#define RGBLIGHT_EFFECT_CHRISTMAS
-//    #define RGBLIGHT_EFFECT_STATIC_GRADIENT
-//    #define RGBLIGHT_EFFECT_RGB_TEST
-//    //#define RGBLIGHT_EFFECT_ALTERNATING
-//    //#define RGBLIGHT_EFFECT_TWINKLE
-//    #define RGBLIGHT_LIMIT_VAL 120
-//    #define RGBLIGHT_HUE_STEP 10
-//    #define RGBLIGHT_SAT_STEP 17
-//    #define RGBLIGHT_VAL_STEP 17
-//#endif
+// USB connection
+#define USB_VBUS_PIN GP24
+#define SPLIT_HAND_PIN GP21
+#define SPLIT_USB_TIMEOUT 10000
+#define SPLIT_USB_TIMEOUT_POLL 25
 
 #ifdef MOUSEKEY_ENABLE 
     #define MOUSEKEY_MOVE_DELTA 2
     //#define MOUSEKEY_TIME_TO_MAX 50
     //#define MOUSEKEY_MAX_SPEED 8
 #endif
+
+/* serial driver setting */
+#define SERIAL_USART_FULL_DUPLEX
+#define SERIAL_USART_DRIVER SIOD0
+#define SERIAL_USART_TX_PIN GP0
+#define SERIAL_USART_RX_PIN GP1
+
+/* I2C driver setting */ 
+//#define I2C_DRIVER I2CD1
+#define I2C1_SDA_PIN GP18
+#define I2C1_SCL_PIN GP19
