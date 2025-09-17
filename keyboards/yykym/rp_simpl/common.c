@@ -37,6 +37,9 @@ __attribute__((weak)) const keypos_t PROGMEM hand_swap_config[MATRIX_ROWS][MATRI
 #endif
 
 #ifdef OLED_ENABLE
+#include "timer.h"
+static uint32_t effect_display_timer = 0;
+static uint8_t last_effect_id = 0xFF;  // Not existing ID 
 
 void keyboard_pre_init_user(void) {
     setPinInputHigh(SPLIT_HAND_PIN);  // 内部プルアップを有効にして入力ピンとして設定 - はやめに設定
@@ -82,10 +85,10 @@ static void oled_render_layer_state(void) {
     }
 }
 
-char     key_name = ' ';
-uint16_t last_keycode;
-uint8_t  last_row;
-uint8_t  last_col;
+static char     key_name = ' ';
+static uint16_t last_keycode;
+static uint8_t  last_row;
+static uint8_t  last_col;
 
 static const char PROGMEM code_to_name[60] = {' ', ' ', ' ', ' ', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'R', 'E', 'B', 'T', '_', '-', '=', '[', ']', '\\', '#', ';', '\'', '`', ',', '.', '/', ' ', ' ', ' '};
 
@@ -166,10 +169,36 @@ bool oled_task_kb(void) {
     }
     //if (is_keyboard_master()) {
     if (readPin(SPLIT_HAND_PIN)) {
+        oled_clear();
         oled_render_layer_state();
         oled_render_keylog();
     } else {
-        oled_render_logo();
+        //oled_render_logo();
+        uint8_t current_effect = rgb_matrix_get_mode();
+
+        // エフェクトが変わったらタイマーをリセット
+        if (current_effect != last_effect_id) {
+            last_effect_id = current_effect;
+            effect_display_timer = timer_read();
+        }
+
+        // 3秒以内ならエフェクト名を表示
+        oled_clear();
+        if (timer_elapsed(effect_display_timer) < 3000) {
+
+            //oled_write_ln(PSTR("RGB Effect:"), false);
+            char buffer[32];
+            snprintf(buffer, sizeof(buffer), "RGB Effect (%d / %d):", current_effect, RGB_MATRIX_EFFECT_MAX);
+            oled_write_ln(buffer, false);
+            oled_write_ln(rgb_matrix_get_mode_name(current_effect), false);
+        } else {
+            // 3秒経過後はロゴ表示
+            oled_render_logo();
+        }
+        // const char* effect_name = rgb_matrix_get_mode_name(rgb_matrix_get_mode());
+        // oled_clear();
+        // oled_write_ln(PSTR("RGB Effect:"), false);
+        // oled_write_ln(effect_name, false);
     }
     return false;
 }

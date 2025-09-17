@@ -50,4 +50,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endif
 
 //OLED orientation
-#define LEFTHAND_OLED_UPSIDEDOWN
+// #define LEFTHAND_OLED_UPSIDEDOWN
+
+// RGB Matrix
+#define RGB_MATRIX_MODE_NAME_ENABLE
